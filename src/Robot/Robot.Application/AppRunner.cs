@@ -34,6 +34,10 @@ internal sealed class AppRunner(ILogger<AppRunner> logger, Domain.Robot robot)
             _logger.LogInformation("Running..");
             new PlaceCommand(robot, 1, 1, Domain.Direction.East).Execute();
             new StatusCommand(robot).Execute();
+            robot.TurnRight();
+            robot.Move();
+            new StatusCommand(robot).Execute();
+
         }
 
         await Task.FromResult(Task.CompletedTask);
