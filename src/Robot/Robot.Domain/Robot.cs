@@ -25,9 +25,9 @@ public sealed class Robot(Table table, ILogger<Robot> logger)
     }
     public void Move()
     {
-        if (!X.HasValue || !Y.HasValue)
+        if (!IsPlaced())
         {
-            _logger.LogWarning("Please provide valid coordinates.");
+            _logger.LogWarning("Robot not placed on table.");
             return;
         }
         (int newX, int newY) = Direction switch
@@ -52,9 +52,9 @@ public sealed class Robot(Table table, ILogger<Robot> logger)
     }
     public void TurnLeft()
     {
-        if (!X.HasValue || !Y.HasValue)
+        if (!IsPlaced())
         {
-            _logger.LogWarning("Please provide valid coordinates.");
+            _logger.LogWarning("Robot not placed on table.");
             return;
         }
 
@@ -71,9 +71,9 @@ public sealed class Robot(Table table, ILogger<Robot> logger)
 
     public void TurnRight()
     {
-        if (!X.HasValue || !Y.HasValue)
+        if (!IsPlaced())
         {
-            _logger.LogWarning("Please provide valid coordinates.");
+            _logger.LogWarning("Robot not placed on table.");
             return;
         }
 
@@ -88,4 +88,6 @@ public sealed class Robot(Table table, ILogger<Robot> logger)
         _logger.LogInformation("Robot turned right to the direction {Direction}.", Direction);
     }
     public void Status() => _logger.LogInformation("Output: {X}, {Y}  direction {Direction}", X, Y, Direction);
+    private bool IsPlaced() =>
+            X.HasValue && Y.HasValue && Direction.HasValue;
 }

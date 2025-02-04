@@ -37,6 +37,9 @@ internal sealed class AppRunner(ILogger<AppRunner> logger, Domain.Robot robot)
             robot.TurnRight();
             robot.Move();
             new StatusCommand(robot).Execute();
+            robot.TurnRight();
+            robot.TurnRight();
+            robot.Move();
 
         }
 
