@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core;
 using Microsoft.Extensions.Logging;
 
 namespace Robot.Application;
@@ -21,7 +22,12 @@ internal sealed class AppRunner(ILogger<AppRunner> logger)
                 _logger.LogInformation("Quit command received. Exiting...");
                 break;
             }
-
+            if (!InputValidator.IsValid(input))
+            {
+                _logger.LogWarning("Input contains invalid characters.");
+                continue;
+            }
+            _logger.LogInformation("Running..");
         }
 
         await Task.FromResult(Task.CompletedTask);
