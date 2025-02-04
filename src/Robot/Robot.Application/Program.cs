@@ -14,9 +14,16 @@ internal static class Program
         using IHost host = CreateHostBuilder(args).Build();
         AppRunner app = host.Services.GetRequiredService<AppRunner>();
         ILogger<IProgramLogger> logger = host.Services.GetRequiredService<ILogger<IProgramLogger>>();
+        using var cts = new CancellationTokenSource();
+        Console.CancelKeyPress += (sender, eventArgs) =>
+        {
+            logger.LogWarning("Cancellation requested. Press any button to exit.");
+            cts.Cancel();
+            eventArgs.Cancel = true;
+        };
         try
         {
-            await app.RunAsync(CancellationToken.None);
+            await app.RunAsync(cts.Token);
         }
         catch (Exception ex)
         {
