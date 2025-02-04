@@ -9,7 +9,8 @@ public sealed class Robot(Table table, ILogger<Robot> logger)
 
     public int? X { get; private set; }
     public int? Y { get; private set; }
-    public void Place(int x, int y)
+    public Direction? Direction { get; private set; }
+    public void Place(int x, int y, Direction direction)
     {
         if (!_table.IsValidPosition(x, y))
         {
@@ -19,8 +20,9 @@ public sealed class Robot(Table table, ILogger<Robot> logger)
 
         X = x;
         Y = y;
-        _logger.LogInformation("Robot placed at ({X},{Y}).", x, y);
+        Direction = direction;
+        _logger.LogInformation("Robot placed at ({X},{Y}) direction {Direction}", x, y, direction);
     }
 
-    public void Status() => _logger.LogInformation("Output: {X}, {Y}", X, Y);
+    public void Status() => _logger.LogInformation("Output: {X}, {Y}  direction {Direction}", X, Y, Direction);
 }

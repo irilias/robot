@@ -32,7 +32,7 @@ internal sealed class AppRunner(ILogger<AppRunner> logger, Domain.Robot robot)
                 continue;
             }
             _logger.LogInformation("Running..");
-            new PlaceCommand(robot, 1, 1).Execute();
+            new PlaceCommand(robot, 1, 1, Domain.Direction.East).Execute();
             new StatusCommand(robot).Execute();
         }
 
