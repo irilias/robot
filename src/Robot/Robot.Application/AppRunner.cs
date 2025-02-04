@@ -7,9 +7,11 @@ using Core;
 using Microsoft.Extensions.Logging;
 
 namespace Robot.Application;
-internal sealed class AppRunner(ILogger<AppRunner> logger)
+internal sealed class AppRunner(ILogger<AppRunner> logger, Domain.Robot robot)
 {
     private readonly ILogger<AppRunner> _logger = logger;
+    private readonly Domain.Robot robot = robot;
+
     public async Task RunAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Application started.");
@@ -28,6 +30,8 @@ internal sealed class AppRunner(ILogger<AppRunner> logger)
                 continue;
             }
             _logger.LogInformation("Running..");
+            robot.Place(1, 1);
+            robot.Status();
         }
 
         await Task.FromResult(Task.CompletedTask);

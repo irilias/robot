@@ -2,6 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Robot.Domain;
 
 namespace Robot.Application;
 
@@ -30,7 +32,17 @@ internal static class Program
            config.AddCommandLine(args);
        })
        .ConfigureServices((context, services) =>
-           services.AddTransient<AppRunner>())
+       {
+           services.Configure<TableSettings>(context.Configuration.GetSection("TableSettings"));
+           services.AddSingleton<Table>(provider =>
+           {
+               TableSettings settings = provider.GetRequiredService<IOptions<TableSettings>>().Value;
+               return new Table(settings.Width, settings.Height);
+           });
+
+           services.AddSingleton<Domain.Robot>();
+           services.AddTransient<AppRunner>();
+       })
        .ConfigureLogging(logging =>
        {
            logging.ClearProviders();
