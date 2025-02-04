@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Robot.Engine.Commands;
 
-namespace Robot.Engine.Commands;
-public interface ICommand
+namespace Robot.Engine;
+public interface ICommandParser
 {
-    void Execute();
+    ICommand? Parse(string? input);
 }

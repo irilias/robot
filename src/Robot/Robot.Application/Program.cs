@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Robot.Domain;
+using Robot.Engine;
 
 namespace Robot.Application;
 
@@ -48,6 +49,8 @@ internal static class Program
            });
 
            services.AddSingleton<Domain.Robot>();
+           services.AddSingleton<ICommandParser, CommandParser>();
+
            services.AddTransient<AppRunner>();
        })
        .ConfigureLogging(logging =>

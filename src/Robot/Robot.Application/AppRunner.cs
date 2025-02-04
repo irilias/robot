@@ -9,10 +9,10 @@ using Robot.Engine;
 using Robot.Engine.Commands;
 
 namespace Robot.Application;
-internal sealed class AppRunner(ILogger<AppRunner> logger, Domain.Robot robot)
+internal sealed class AppRunner(ILogger<AppRunner> logger, ICommandParser commandParser)
 {
     private readonly ILogger<AppRunner> _logger = logger;
-    private readonly Domain.Robot robot = robot;
+    private readonly ICommandParser _commandParser = commandParser;
 
     public async Task RunAsync(CancellationToken cancellationToken)
     {
@@ -26,21 +26,10 @@ internal sealed class AppRunner(ILogger<AppRunner> logger, Domain.Robot robot)
                 _logger.LogInformation("Quit command received. Exiting...");
                 break;
             }
-            if (!InputValidator.IsValid(input))
-            {
-                _logger.LogWarning("Input contains invalid characters.");
-                continue;
-            }
+           
             _logger.LogInformation("Running..");
-            new PlaceCommand(robot, 1, 1, Domain.Direction.East).Execute();
-            new StatusCommand(robot).Execute();
-            robot.TurnRight();
-            robot.Move();
-            new StatusCommand(robot).Execute();
-            robot.TurnRight();
-            robot.TurnRight();
-            robot.Move();
-
+            ICommand? command = _commandParser.Parse(input);
+            command?.Execute();
         }
 
         await Task.FromResult(Task.CompletedTask);
