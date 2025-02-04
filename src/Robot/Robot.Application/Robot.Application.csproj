@@ -10,8 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core\Core.csproj" />
-    <ProjectReference Include="..\Robot.Domain\Robot.Domain.csproj" />
+    <ProjectReference Include="..\Robot.Engine\Robot.Engine.csproj" />
   </ItemGroup>
 
   <ItemGroup>

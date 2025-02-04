@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Core;
 using Microsoft.Extensions.Logging;
+using Robot.Engine;
+using Robot.Engine.Commands;
 
 namespace Robot.Application;
 internal sealed class AppRunner(ILogger<AppRunner> logger, Domain.Robot robot)
@@ -14,12 +16,12 @@ internal sealed class AppRunner(ILogger<AppRunner> logger, Domain.Robot robot)
 
     public async Task RunAsync(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Application started.");
+        _logger.LogInformation("Application started. Type commands or {Quit} to exit.", CommandConstants.Quit);
         while (!cancellationToken.IsCancellationRequested)
         {
             _logger.LogInformation("Enter a command: ");
             string? input = Console.ReadLine();
-            if (string.Equals(input?.Trim(), "Quit", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(input?.Trim(), CommandConstants.Quit, StringComparison.OrdinalIgnoreCase))
             {
                 _logger.LogInformation("Quit command received. Exiting...");
                 break;
@@ -30,8 +32,8 @@ internal sealed class AppRunner(ILogger<AppRunner> logger, Domain.Robot robot)
                 continue;
             }
             _logger.LogInformation("Running..");
-            robot.Place(1, 1);
-            robot.Status();
+            new PlaceCommand(robot, 1, 1).Execute();
+            new StatusCommand(robot).Execute();
         }
 
         await Task.FromResult(Task.CompletedTask);
