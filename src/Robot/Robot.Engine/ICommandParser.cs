@@ -9,5 +9,5 @@ using Robot.Engine.Commands;
 namespace Robot.Engine;
 public interface ICommandParser
 {
-    Option<ICommand> Parse(string? input);
+    Option<ICommand> Parse(string input);
 }

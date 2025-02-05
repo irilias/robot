@@ -14,15 +14,15 @@ internal sealed class AppRunner(ILogger<AppRunner> logger, ICommandParser comman
     private readonly ILogger<AppRunner> _logger = logger;
     private readonly ICommandParser _commandParser = commandParser;
 
-    public async Task RunAsync(CancellationToken cancellationToken)
+    public Task RunAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("\n Application started. Type commands in this format: \n * To place a robot: {Place} 0,0,NORTH \n * To move: {Move} \n * To turn: {Left}, {Right} \n * To get status: {Status} \n * To quit: {Quit}.\n\n",
                 CommandConstants.Place, CommandConstants.Move, CommandConstants.Left, CommandConstants.Right, CommandConstants.Status, CommandConstants.Quit);
         while (!cancellationToken.IsCancellationRequested)
         {
             _logger.LogInformation("Enter a command: ");
-            string? input = Console.ReadLine();
-            if (string.Equals(input?.Trim(), CommandConstants.Quit, StringComparison.OrdinalIgnoreCase))
+            string input = Console.ReadLine() ?? string.Empty;
+            if (string.Equals(input.Trim(), CommandConstants.Quit, StringComparison.OrdinalIgnoreCase))
             {
                 _logger.LogInformation("Quit command received. Exiting...");
                 break;
@@ -43,7 +43,6 @@ internal sealed class AppRunner(ILogger<AppRunner> logger, ICommandParser comman
                 },
                 none: () => _logger.LogWarning("Invalid command."));
         }
-
-        await Task.FromResult(Task.CompletedTask);
+        return Task.CompletedTask;
     }
 }

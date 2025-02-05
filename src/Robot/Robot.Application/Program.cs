@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Robot.Domain;
 using Robot.Engine;
+using Robot.Engine.CommandStrategies;
 
 namespace Robot.Application;
 
@@ -49,6 +50,12 @@ internal static class Program
            });
 
            services.AddSingleton<Domain.Robot>();
+
+           services.AddSingleton<ICommandStrategy, PlaceCommandStrategy>();
+           services.AddSingleton<ICommandStrategy, MoveCommandStrategy>();
+           services.AddSingleton<ICommandStrategy, LeftCommandStrategy>();
+           services.AddSingleton<ICommandStrategy, RightCommandStrategy>();
+           services.AddSingleton<ICommandStrategy, StatusCommandStrategy>();
            services.AddSingleton<ICommandParser, CommandParser>();
 
            services.AddTransient<AppRunner>();
