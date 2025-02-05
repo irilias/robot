@@ -87,7 +87,15 @@ public sealed class Robot(Table table, ILogger<Robot> logger)
         };
         _logger.LogInformation("Robot turned right to the direction {Direction}.", Direction);
     }
-    public void Status() => _logger.LogInformation("Output: {X}, {Y}  direction {Direction}", X, Y, Direction);
+    public void Status()
+    {
+        if (!IsPlaced())
+        {
+            _logger.LogWarning("Robot not placed on table.");
+            return;
+        }
+        _logger.LogInformation("Output: {X}, {Y}  direction {Direction}", X, Y, Direction);
+    }
     private bool IsPlaced() =>
             X.HasValue && Y.HasValue && Direction.HasValue;
 }
