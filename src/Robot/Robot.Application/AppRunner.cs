@@ -27,7 +27,10 @@ internal sealed class AppRunner(ILogger<AppRunner> logger, ICommandParser comman
                 _logger.LogInformation("Quit command received. Exiting...");
                 break;
             }
-           
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                continue;
+            }
             Option<ICommand> commandOption = _commandParser.Parse(input);
             commandOption.Match(
                 some: command =>
